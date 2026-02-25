@@ -6,40 +6,58 @@
   <title>MODU Tasks - PDF Manager</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
   <main class="layout">
-    <header class="hero">
+    <header class="topbar">
       <p class="eyebrow">MODU Tasks</p>
-      <h1>PDF Manager</h1>
-      <p class="subtitle">Merge by filename number order and optimize output with zero content storage.</p>
+      <p class="tagline">One tool. One output. Better documents.</p>
     </header>
 
-    <section class="card" aria-label="MODU PDF Manager">
-      <div class="dropzone-wrap">
-        <label for="pdf-input" class="dropzone">
-          <span class="dropzone-title">Drop PDF files here</span>
-          <span class="dropzone-sub">or click to browse</span>
-        </label>
-        <input id="pdf-input" type="file" accept="application/pdf" multiple>
+    <section class="hero">
+      <h1>MODU PDF Manager</h1>
+      <p class="subtitle">Merge files by numeric filename order and optionally optimize the output - all processed without server-side storage.</p>
+    </section>
+
+    <section class="workspace" aria-label="MODU PDF Manager">
+      <div class="panel input-panel">
+        <h2>Input</h2>
+        <p class="panel-copy">Upload at least two PDFs. Files are sorted chronologically by detected numbers in the filename.</p>
+
+        <div class="dropzone-wrap">
+          <label for="pdf-input" class="dropzone">
+            <span class="dropzone-title">Drop PDF files here</span>
+            <span class="dropzone-sub">or click to browse</span>
+          </label>
+          <input id="pdf-input" type="file" accept="application/pdf" multiple>
+        </div>
+
+        <div class="controls">
+          <label class="checkbox">
+            <input id="optimize-checkbox" type="checkbox" checked>
+            <span>Lossless optimize after merge</span>
+          </label>
+          <button id="run-btn" type="button" disabled>Create Merged PDF</button>
+        </div>
       </div>
 
-      <div class="controls">
-        <label class="checkbox">
-          <input id="optimize-checkbox" type="checkbox" checked>
-          <span>Lossless optimize after merge</span>
-        </label>
-        <button id="run-btn" type="button" disabled>Create Merged PDF</button>
-      </div>
-
-      <div class="results">
+      <div class="panel output-panel">
         <h2>Order Preview</h2>
         <ol id="file-order"></ol>
+        <div class="placeholder" role="img" aria-label="Image Placeholder">Image Placeholder</div>
         <p id="status">Select at least two PDFs to begin.</p>
       </div>
     </section>
+
+    <footer class="modu-footer">
+      <div class="divider"></div>
+      <div class="footer-row">
+        <p class="slide-no">01</p>
+        <p class="make-better"><span class="dot"></span>Make it better</p>
+      </div>
+    </footer>
   </main>
 
   <script type="module" src="./app.js"></script>
