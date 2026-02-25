@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MODU Tasks - PDF Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="layout">
+    <header class="hero">
+      <p class="eyebrow">MODU Tasks</p>
+      <h1>PDF Manager</h1>
+      <p class="subtitle">Merge by filename number order and optimize output with zero content storage.</p>
+    </header>
+
+    <section class="card" aria-label="MODU PDF Manager">
+      <div class="dropzone-wrap">
+        <label for="pdf-input" class="dropzone">
+          <span class="dropzone-title">Drop PDF files here</span>
+          <span class="dropzone-sub">or click to browse</span>
+        </label>
+        <input id="pdf-input" type="file" accept="application/pdf" multiple>
+      </div>
+
+      <div class="controls">
+        <label class="checkbox">
+          <input id="optimize-checkbox" type="checkbox" checked>
+          <span>Lossless optimize after merge</span>
+        </label>
+        <button id="run-btn" type="button" disabled>Create Merged PDF</button>
+      </div>
+
+      <div class="results">
+        <h2>Order Preview</h2>
+        <ol id="file-order"></ol>
+        <p id="status">Select at least two PDFs to begin.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
