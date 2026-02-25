@@ -7,6 +7,7 @@ const orderList = document.getElementById("file-order");
 const status = document.getElementById("status");
 
 let sortedFiles = [];
+let dragIndex = null;
 
 fileInput.addEventListener("change", () => {
   const files = Array.from(fileInput.files || []).filter((file) =>
@@ -18,7 +19,7 @@ fileInput.addEventListener("change", () => {
   updateStatus(
     sortedFiles.length < 2
       ? "Select at least two PDFs to begin."
-      : `${sortedFiles.length} PDFs ready.`
+      : `${sortedFiles.length} PDFs ready. Drag to reorder if needed.`
   );
 });
 
@@ -62,10 +63,65 @@ runBtn.addEventListener("click", async () => {
 
 function renderOrder(files) {
   orderList.innerHTML = "";
-  for (const file of files) {
+  for (const [index, file] of files.entries()) {
     const item = document.createElement("li");
-    item.textContent = file.name;
+    item.className = "order-item";
+    item.draggable = true;
+    item.dataset.index = String(index);
+    item.innerHTML = `<span class="order-handle" aria-hidden="true">::</span><span>${file.name}</span>`;
+    item.addEventListener("dragstart", onDragStart);
+    item.addEventListener("dragend", onDragEnd);
     orderList.append(item);
+  }
+}
+
+function onDragStart(event) {
+  const item = event.currentTarget;
+  dragIndex = Number.parseInt(item.dataset.index, 10);
+  item.classList.add("is-dragging");
+  event.dataTransfer.effectAllowed = "move";
+}
+
+function onDragEnd(event) {
+  event.currentTarget.classList.remove("is-dragging");
+  clearDragOverState();
+}
+
+orderList.addEventListener("dragover", (event) => {
+  event.preventDefault();
+  const target = event.target.closest(".order-item");
+  if (!target) {
+    return;
+  }
+  clearDragOverState();
+  target.classList.add("drag-over");
+});
+
+orderList.addEventListener("drop", (event) => {
+  event.preventDefault();
+  const target = event.target.closest(".order-item");
+  if (!target || dragIndex === null) {
+    return;
+  }
+
+  const dropIndex = Number.parseInt(target.dataset.index, 10);
+  if (!Number.isInteger(dropIndex) || dropIndex === dragIndex) {
+    dragIndex = null;
+    clearDragOverState();
+    return;
+  }
+
+  const [movedFile] = sortedFiles.splice(dragIndex, 1);
+  sortedFiles.splice(dropIndex, 0, movedFile);
+  dragIndex = null;
+  clearDragOverState();
+  renderOrder(sortedFiles);
+  updateStatus(`Order updated. ${sortedFiles.length} PDFs ready.`);
+});
+
+function clearDragOverState() {
+  for (const item of orderList.querySelectorAll(".order-item")) {
+    item.classList.remove("drag-over");
   }
 }
 

@@ -182,12 +182,39 @@ button:disabled {
 
 #file-order {
   margin: 16px 0 0;
-  padding-left: 24px;
+  padding-left: 0;
   color: var(--modu-blue);
+  list-style: none;
 }
 
 #file-order li {
   margin-bottom: 8px;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--modu-grey);
+  border-radius: 10px;
+  background: var(--modu-white);
+  cursor: grab;
+}
+
+.order-item.is-dragging {
+  opacity: 0.6;
+}
+
+.order-item.drag-over {
+  border-color: var(--modu-red);
+  background: var(--modu-light-grey);
+}
+
+.order-handle {
+  color: var(--modu-grey);
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
 .placeholder {
