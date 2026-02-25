@@ -1,4 +1,4 @@
-name = "modu-pdf-api"
+name = "modu-tasks"
 main = "src/worker.js"
 compatibility_date = "2026-02-25"
 
