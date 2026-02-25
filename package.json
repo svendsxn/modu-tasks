@@ -1,0 +1,16 @@
+{
+  "name": "modu-tasks",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:api": "wrangler dev",
+    "deploy:api": "wrangler deploy"
+  },
+  "dependencies": {
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.4.0"
+  }
+}

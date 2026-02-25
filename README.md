@@ -4,11 +4,15 @@ Single-page internal tool for MODU employees:
 - Merge PDF files in chronological numeric filename order (`1.pdf`, `2.pdf`, `10.pdf`, etc.).
 - Optional lossless optimization pass after merge.
 - Fully client-side in browser (no backend, no file storage on server).
+- Optional stateless API for machine-readable integration (Cloudflare Worker).
 
 ## Files
 - `index.html` - app shell
 - `styles.css` - UI styling
 - `app.js` - PDF merge and optimization logic
+- `src/worker.js` - Cloudflare Worker API (`/api/merge`, `/api/optimize`)
+- `wrangler.toml` - Worker config
+- `package.json` - API dependencies and scripts
 
 ## Local Run
 Use any static server:
@@ -19,6 +23,46 @@ python3 -m http.server 8788
 ```
 
 Open `http://localhost:8788`.
+
+## API (Machine Readable)
+This repo now includes a stateless Cloudflare Worker API.
+
+### Endpoints
+- `GET /health`
+- `GET /openapi.json`
+- `POST /api/merge`
+- `POST /api/optimize`
+
+### Run API locally
+```bash
+cd /Users/gustavsvendsen/modu-tasks
+npm install
+npm run dev:api
+```
+
+### Deploy API to Cloudflare
+```bash
+cd /Users/gustavsvendsen/modu-tasks
+npm run deploy:api
+```
+
+### Example: merge
+```bash
+curl -X POST "https://<your-worker>.workers.dev/api/merge" \
+  -F "files=@1.pdf" \
+  -F "files=@2.pdf" \
+  -F "files=@10.pdf" \
+  -F "sort=numeric" \
+  -F "optimize=true" \
+  --output merged.pdf
+```
+
+### Example: optimize
+```bash
+curl -X POST "https://<your-worker>.workers.dev/api/optimize" \
+  -F "file=@merged.pdf" \
+  --output merged_optimized.pdf
+```
 
 ## GitHub Setup
 Create repo name: `MODU-Tasks` (display title can still be "MODU Tasks").
