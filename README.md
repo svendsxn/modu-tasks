@@ -7,9 +7,9 @@ Single-page internal tool for MODU employees:
 - Optional stateless API for machine-readable integration (Cloudflare Worker).
 
 ## Files
-- `index.html` - app shell
-- `styles.css` - UI styling
-- `app.js` - PDF merge and optimization logic
+- `public/index.html` - app shell
+- `public/styles.css` - UI styling
+- `public/app.js` - browser merge and optimization logic
 - `src/worker.js` - Cloudflare Worker API (`/api/merge`, `/api/optimize`)
 - `wrangler.toml` - Worker config
 - `package.json` - API dependencies and scripts
@@ -19,15 +19,16 @@ Use any static server:
 
 ```bash
 cd modu-tasks
-python3 -m http.server 8788
+python3 -m http.server 8788 -d public
 ```
 
 Open `http://localhost:8788`.
 
 ## API (Machine Readable)
-This repo now includes a stateless Cloudflare Worker API.
+This repo now includes a stateless Cloudflare Worker API and serves the frontend from the same Worker domain.
 
 ### Endpoints
+- `GET /` (frontend)
 - `GET /health`
 - `GET /openapi.json`
 - `POST /api/merge`
@@ -40,7 +41,7 @@ npm install
 npm run dev:api
 ```
 
-### Deploy API to Cloudflare
+### Deploy frontend + API to Cloudflare Worker
 ```bash
 cd /Users/gustavsvendsen/modu-tasks
 npm run deploy:api
@@ -76,15 +77,6 @@ git branch -M main
 git remote add origin git@github.com:<your-org-or-user>/MODU-Tasks.git
 git push -u origin main
 ```
-
-## Cloudflare Pages Deploy
-1. In Cloudflare, go to `Workers & Pages` -> `Create` -> `Pages` -> `Connect to Git`.
-2. Select `MODU-Tasks`.
-3. Build settings:
-   - Framework preset: `None`
-   - Build command: *(leave empty)*
-   - Build output directory: `/`
-4. Deploy.
 
 No environment variables are required.
 

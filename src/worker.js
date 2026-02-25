@@ -1,7 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
@@ -33,6 +33,10 @@ export default {
       return handleOptimize(request);
     }
 
+    if (request.method === "GET" && !url.pathname.startsWith("/api/")) {
+      return serveFrontend(request, env);
+    }
+
     return json(
       {
         error: "Not Found",
@@ -42,6 +46,21 @@ export default {
     );
   },
 };
+
+async function serveFrontend(request, env) {
+  if (!env.ASSETS) {
+    return json({ error: "Frontend assets are not configured on this Worker." }, 500);
+  }
+
+  const assetResponse = await env.ASSETS.fetch(request);
+  if (assetResponse.status !== 404) {
+    return assetResponse;
+  }
+
+  const url = new URL(request.url);
+  url.pathname = "/index.html";
+  return env.ASSETS.fetch(new Request(url.toString(), request));
+}
 
 async function handleMerge(request) {
   const form = await request.formData();
